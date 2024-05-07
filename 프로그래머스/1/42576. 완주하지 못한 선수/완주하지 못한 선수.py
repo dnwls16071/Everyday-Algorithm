@@ -1,15 +1,13 @@
-from collections import Counter
+from collections import defaultdict
 
 def solution(participant, completion):
-    non_completion = []
-    dic = Counter(participant)
-    for i in completion:
-        if dic[i]:
-            dic[i] -= 1
-        else:
-            non_completion.append(dic[i])
+    maraton = defaultdict(int)
+    for p in participant:
+        maraton[p] += 1
     
-    for key, value in dic.items():
-        if value != 0:
-            non_completion.append(key)
-    return "".join(map(str, non_completion))
+    for c in completion:
+        maraton[c] -= 1
+    
+    for key, val in maraton.items():
+        if val != 0:
+            return key
