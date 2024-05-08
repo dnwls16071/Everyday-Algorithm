@@ -1,11 +1,11 @@
-### 아무것도 입지 않은 경우만 제외
-
-from collections import Counter
+from collections import defaultdict
 
 def solution(clothes):
     answer = 1
-    dictionary = Counter(i[1] for i in clothes)
-    for i in dictionary.values():
-        answer *= (i+1)
-    answer -= 1
-    return answer
+    dic = defaultdict(int)
+    for c in clothes:
+        dic[c[1]] += 1
+
+    for key, val in dic.items():
+        answer *= (val + 1)
+    return answer - 1
