@@ -8,27 +8,28 @@ def solution(numbers, hand):
     cur_right = "#"
     
     for number in numbers:
-        d1 = abs(phone[cur_left][0] - phone[str(number)][0]) + abs(phone[cur_left][1] - phone[str(number)][1])
-        d2 = abs(phone[cur_right][0] - phone[str(number)][0]) + abs(phone[cur_right][1] - phone[str(number)][1])
+        number_str = str(number)
+        d1 = abs(phone[cur_left][0] - phone[number_str][0]) + abs(phone[cur_left][1] - phone[number_str][1])
+        d2 = abs(phone[cur_right][0] - phone[number_str][0]) + abs(phone[cur_right][1] - phone[number_str][1])
         
-        if str(number) in ["1", "4", "7"]:
+        if number_str in ["1", "4", "7"]:
             result.append("L")
-            cur_left = str(number)
-        elif str(number) in ["3", "6", "9"]:
+            cur_left = number_str
+        elif number_str in ["3", "6", "9"]:
             result.append("R")
-            cur_right = str(number)
+            cur_right = number_str
         else:
             if d1 == d2:
                 if hand == "left":
                     result.append("L")
-                    cur_left = str(number)
+                    cur_left = number_str
                 else:
                     result.append("R")
-                    cur_right = str(number)
+                    cur_right = number_str
             elif d1 > d2:
                 result.append("R")
-                cur_right = str(number)
+                cur_right = number_str
             else:
                 result.append("L")
-                cur_left = str(number)
+                cur_left = number_str
     return "".join(result)
