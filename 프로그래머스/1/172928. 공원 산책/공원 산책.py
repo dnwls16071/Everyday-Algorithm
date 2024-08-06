@@ -15,7 +15,7 @@ def solution(park, routes):
         for _ in range(int(route[1])):
             ny = y + dic[route[0]][0]
             nx = x + dic[route[0]][1]
-            print(ny, nx)
+
             # 지도 밖을 벗어난 경우
             if nx < 0 or nx >= len(park[0]) or ny < 0 or ny >= len(park):
                 y, x = sy, sx
