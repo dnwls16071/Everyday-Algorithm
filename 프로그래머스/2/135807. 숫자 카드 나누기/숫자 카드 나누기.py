@@ -1,4 +1,6 @@
 def solution(arrayA, arrayB):
+    arrayA.sort()
+    arrayB.sort()
     answerA = 1; answerB = 1
     sA = arrayA[0]; sB = arrayB[0];
     for i in arrayA[1:]:
