@@ -1,15 +1,13 @@
 def solution(s):
-    stack = [s[0]]
-    for i in range(1, len(s)):
-        if len(stack) > 0:
-            if stack[-1] == s[i]:
-                stack.pop()
-            else:
-                stack.append(s[i])
+    s = list(s)
+    stack = []
+    for i in s:
+        if stack and stack[-1] == i:
+            stack.pop()
         else:
-            stack.append(s[i])
-    
-    if len(stack) == 0:
-        return 1
-    else:
+            stack.append(i)
+
+    if stack:
         return 0
+    else:
+        return 1
