@@ -1,13 +1,14 @@
 def solution(s):
-    s = list(s)
+    answer = []
     idx = 0
-    for i in range(len(s)):
-        if s[i] == " ":
+    for i in s:
+        if i == " ":
+            answer.append(" ")
             idx = 0
         else:
             if idx % 2 == 0:
-                s[i] = s[i].upper()
+                answer.append(i.upper())
             else:
-                s[i] = s[i].lower()
+                answer.append(i.lower())
             idx += 1
-    return "".join(map(str, s))
+    return "".join(map(str, answer))
