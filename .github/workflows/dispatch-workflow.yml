@@ -13,5 +13,5 @@ jobs:
        uses: peter-evans/repository-dispatch@v1
        with:
          token: ${{ secrets.GH_PAT }}
-         repository: dnwls16071@naver.com/Programmers_Badge_Generator
+         repository: dnwls16071/Github_Programmers_Rank
          event-type: trigger-workflow
