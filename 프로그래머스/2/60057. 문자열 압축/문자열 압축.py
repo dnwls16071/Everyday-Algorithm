@@ -1,20 +1,21 @@
 def solution(s):
     answer = len(s)
-    for i in range(1, (len(s) // 2) + 1):
-        prev = s[:i]
+    for z in range(1, (len(s) // 2) + 1):
+        zip_array = []
+        std = s[:z]
         cnt = 1
-        temp = 0
-        for j in range(i, len(s)+i, i):
-            curr = s[j:j+i]
-            if prev == curr:
+        for idx in range(z, len(s)+z, z):
+            comp = s[idx:idx+z]
+            
+            if std == comp:
                 cnt += 1
-            else:
-                if cnt != 1:
-                    temp += len(str(cnt)) + len(prev)
+            elif std != comp:
+                if cnt > 1:
+                    zip_array.append(str(cnt) + std)
                 else:
-                    temp += len(prev)
+                    zip_array.append(std)
+                std = comp
                 cnt = 1
-                prev = curr
-        answer = min(answer, temp)
-        temp = 0
+        joinProc = "".join(map(str, zip_array))
+        answer = min(answer, len(joinProc))
     return answer
