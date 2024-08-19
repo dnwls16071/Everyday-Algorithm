@@ -1,14 +1,12 @@
 def solution(n):
-    res = convert(n)
-    Sum = 0
-    for i in range(len(res)):
-        Sum += res[i] * (3 ** i)
-    return Sum
-
-
-def convert(n):
-    res = []
-    while n != 0:
-        res.append(n % 3)
-        n //= 3
-    return res[::-1]
+    
+    def n_to_three(n):
+        result = []
+        while n != 0:
+            result.append(n % 3)
+            n //= 3
+        result = "".join(map(str, result))
+        return result
+    
+    answer = n_to_three(n)
+    return int(answer, 3)
