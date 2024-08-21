@@ -1,10 +1,10 @@
 def solution(brown, yellow):
-    """
-    area : 전체 면적(갈색 타일과 노란색 타일의 합)
-    """
+    answer = []
     area = brown + yellow
-    for i in range(2, brown + 1):
+    for i in range(1, (area // 2) + 1):
         if area % i == 0:
-            a, b = i, area // i
-            if (a-2) * (b-2) == yellow:
-                return [b, a]
+            answer.append([i, area // i])
+    
+    for lst in answer:
+        if lst[0] >= lst[1] and (lst[0] - 2) * (lst[1] - 2) == yellow:
+            return lst
