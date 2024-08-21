@@ -1,17 +1,21 @@
 import sys
-sys.setrecursionlimit(10000)
+sys.setrecursionlimit(10**6)
 
 def solution(k, room_number):
-    # 현재 방 배정 상태 딕셔너리
+    # r_key : 현재 들어찬 방, r_value : 들어갈 수 있는 가장 가까운 방
     rooms = dict()
-    for num in room_number:
-        empty = find_emptyrooms(num, rooms)
+    for room in room_number:
+        findRoom(room, rooms)
     return list(rooms.keys())
-
-def find_emptyrooms(chk, rooms):
-    if chk not in rooms.keys():
-        rooms[chk] = chk + 1    # chk배정, chk+1을 다음 방에 배정
-        return chk
-    empty = find_emptyrooms(rooms[chk], rooms)
-    rooms[chk] = empty + 1
-    return empty
+        
+        
+def findRoom(room, rooms):
+    # 신청한 방을 그대로 들어갈 수 있다면?
+    if room not in rooms.keys():
+        rooms[room] = room + 1
+        return room
+    # 신청한 방에 들어갈 수 없다면?
+    else:
+        value = findRoom(rooms[room], rooms)
+        rooms[room] = value + 1
+        return value
