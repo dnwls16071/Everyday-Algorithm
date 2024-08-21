@@ -1,27 +1,24 @@
+from collections import defaultdict
+
 def solution(answers):
-    first = [1, 2, 3, 4, 5]
-    second = [2, 1, 2, 3, 2, 4, 2, 5]
-    third = [3, 3, 1, 1, 2, 2, 4, 4, 5, 5]        
-    answer = []
-    result = [0] * 3
-    for i in range(len(answers)):
-        if answers[i] == first[i % len(first)]:
-            result[0] += 1
-        
-        if answers[i] == second[i % len(second)]:
-            result[1] += 1
-        
-        if answers[i] == third[i % len(third)]:
-            result[2] += 1
-            
-    for idx, val in enumerate(result):
-        answer.append([idx, val]) 
-    answer = sorted(answer, key=lambda x : (-x[1], x[0]))
+    score = defaultdict(int)
+    a = [1, 2, 3, 4, 5]
+    b = [2, 1, 2, 3, 2, 4, 2, 5]
+    c = [3, 3, 1, 1, 2, 2, 4, 4, 5, 5]
     
-    ans = []
-    for idx, val in answer:
-        if val == max(result):
-            ans.append(idx+1)
-        else:
-            break
-    return ans
+    for i in range(len(answers)):
+        if a[i % len(a)] == answers[i]:
+            score[1] += 1
+        if b[i % len(b)] == answers[i]:
+            score[2] += 1
+        if c[i % len(c)] == answers[i]:
+            score[3] += 1
+    
+    answer = []
+    max_hit = max(score.values())
+    score = sorted(score.items(), key=lambda x : (x[1], x[0]))
+    for key, value in score:
+        if value == max_hit:
+            answer.append(key)
+    return answer
+            
