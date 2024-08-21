@@ -1,13 +1,16 @@
+def DFS(data, string, cnt):
+    if cnt == 6:
+        return
+    if string != "":
+        data.append(string)
+    for c in ["A", "E", "I", "O", "U"]:
+        DFS(data, "".join(map(str, [string, c])), cnt+1)
+    
 def solution(word):
     answer = 0
-    word_list = []
-    alphabets = ['A', 'E', 'I', 'O', 'U']
-    
-    def DFS(cur, cnt):
-        if cnt == 5:
-            return
-        for i in range(5):
-            word_list.append(cur + alphabets[i])
-            DFS(cur + alphabets[i], cnt + 1)
-    DFS("", 0)
-    return word_list.index(word) + 1
+    data = []
+    DFS(data, "", 0)
+    for i in range(len(data)):
+        if data[i] == word:
+            return answer + 1
+        answer += 1
