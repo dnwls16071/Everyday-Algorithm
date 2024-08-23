@@ -1,8 +1,8 @@
 def solution(citations):
     answer = 0
-    citations.sort(reverse=True)
+    citations.sort()
+    c = len(citations)
     for idx, val in enumerate(citations):
-        if val >= idx + 1:
-            h_idx = idx + 1
-            answer = h_idx
-    return answer
+        if val >= c - idx:
+            return c - idx
+    return 0
