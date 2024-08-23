@@ -1,20 +1,22 @@
 from itertools import permutations
-import re
 
+def check(arr, banned_id):
+    for i in range(len(banned_id)):
+        if len(arr[i]) != len(banned_id[i]):
+            return False
+        for a, b in zip(arr[i], banned_id[i]):
+            if b == "*":
+                continue
+            if a != b:
+                return False
+    return True
+        
 def solution(user_id, banned_id):
     answer = set()
-    banned = ' '.join(map(str, banned_id)).replace("*", ".")
-    """
-    fr.d. abc1..
-    """
-    
-    for perm in permutations(user_id, len(banned_id)):
-        """동일한 경우
-        frodo fradi
-        fradi frodo
-        """
-        string = ' '.join(perm)
-        if re.fullmatch(banned, string):
-            temp = ' '.join(sorted(perm))
-            answer.add(temp)
+    for arr in permutations(user_id, len(banned_id)):   # "frodo", "fradi"
+        if check(arr, banned_id):
+            arr = list(arr)
+            arr.sort()
+            arr = tuple(arr)
+            answer.add(arr)
     return len(answer)
