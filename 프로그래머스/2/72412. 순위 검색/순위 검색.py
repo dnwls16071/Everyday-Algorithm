@@ -1,29 +1,35 @@
-from collections import defaultdict
 from itertools import combinations
-from bisect import bisect_left, bisect_right
+from collections import defaultdict
 
+def binary_search(score, key):
+    left = 0
+    right = len(score)
+    while left < right:
+        mid = (left + right) // 2
+        if score[mid] >= key:
+            right = mid
+        else:
+            left = mid + 1
+    return len(score) - left
+        
 def solution(info, query):
     answer = []
-    # 지원자 정보를 기반으로 조합을 산출
-    # 키에는 점수를 제외한 지원자 정보, 값에는 지원자 점수 리스트(선형 탐색X)
-    data = defaultdict(list)    
-    
-    for i in info:  
-        i = i.split(" ")                              # java backend junior pizza
-        score = int(i.pop())                          # 150
-        data["".join(i)].append(score)                # javabackendjuniorpizza
-        for j in range(4):
-            case = list(combinations(i, j))           # 지원자 정보 조합
-            for k in case:
-                data["".join(k)].append(score)
+    data = defaultdict(list)
+    for i in info:
+        i = i.split(" ")
+        score = int(i.pop())
+        for j in range(5):
+            for comb in combinations(i, j):
+                key = "".join(comb)
+                data[key].append(score)
     
     for key, value in data.items():
-        data[key].sort()
+        data[key].sort()    # O(N log N)
     
     for q in query:
         q = q.split(" ")
         score = int(q.pop())
         key = "".join(q)
-        key = key.replace("and", "").replace(" ", "").replace("-", "")
-        answer.append(len(data[key]) - bisect_left(data[key], score))
+        key = key.replace("and", "").replace("-", "").replace(" ", "")
+        answer.append(binary_search(data[key], score))
     return answer
