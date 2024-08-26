@@ -1,13 +1,11 @@
-from collections import defaultdict
+from collections import Counter
 
 def solution(participant, completion):
-    maraton = defaultdict(int)
-    for p in participant:
-        maraton[p] += 1
-    
-    for c in completion:
-        maraton[c] -= 1
-    
-    for key, val in maraton.items():
-        if val != 0:
+    counter = Counter(participant)
+    for comp in completion:
+        if counter[comp] > 0:
+            counter[comp] -= 1
+        
+    for key, value in counter.items():
+        if value != 0:
             return key
