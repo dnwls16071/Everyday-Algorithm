@@ -11,7 +11,7 @@ def solution(record):
     for action in actions:
         type, id = action
         if type == "Enter":
-            answer.append(users[id] + "님이 들어왔습니다.")
+            answer.append("{}님이 들어왔습니다.".format(users[id]))
         elif type == "Leave":
-            answer.append(users[id] + "님이 나갔습니다.")
+            answer.append("{}님이 나갔습니다.".format(users[id]))
     return answer
