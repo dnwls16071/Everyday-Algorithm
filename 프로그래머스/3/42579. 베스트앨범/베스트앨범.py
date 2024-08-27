@@ -11,6 +11,6 @@ def solution(genres, plays):
     gens = sorted(gens.items(), key=lambda x : -x[1])
     
     for (gen, _) in gens:
-        for (idx, _) in sorted(info[gen], key=lambda x : -x[1])[:2]: 
+        for (idx, _) in sorted(info[gen], key=lambda x : (-x[1], x[0]))[:2]: 
             answer.append(idx)
     return answer
