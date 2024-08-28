@@ -1,18 +1,16 @@
 import sys
 sys.setrecursionlimit(10**6)
 
-def fibo(n, dp):
-    if n == 0:
-        return 0
-    elif n == 1 or n == 2:
+def fibo(n, memoization):
+    if n < 2:
         return 1
-    
-    if dp[n] == 0:
-        dp[n] = fibo(n-1, dp) + fibo(n-2, dp)
-    return dp[n] % 1234567
-            
+    if not memoization[n]:
+        memoization[n] = fibo(n-1, memoization) + fibo(n-2, memoization)
+    return memoization[n]
+
 def solution(n):
-    dp = [0] * (n + 1)
-    dp[0] = 0
-    dp[1] = dp[2] = 1
-    return fibo(n, dp)
+    memoization = [0] * n
+    memoization[0] = 1
+    memoization[1] = 1
+    fibo(n-1, memoization)
+    return memoization[-1] % 1234567
