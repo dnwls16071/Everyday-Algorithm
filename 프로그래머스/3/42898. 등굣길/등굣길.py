@@ -1,13 +1,10 @@
 def solution(m, n, puddles):
-    info = [[0] * (m+1) for _ in range(n+1)]
-    info[1][1] = 1
+    map = [[0] * m for _ in range(n)]
+    map[0][0] = 1
     
-    for i in range(1, n+1):
-        for j in range(1, m+1):
-            if i == 1 and j == 1:
+    for i in range(n):
+        for j in range(m):
+            if [j+1, i+1] in puddles or (i == 0 and j == 0):
                 continue
-            if [j, i] in puddles:
-                info[i][j] = 0
-            else:
-                info[i][j] = (info[i-1][j] + info[i][j-1]) % 1000000007
-    return info[-1][-1]
+            map[i][j] = (map[i-1][j] + map[i][j-1]) % 1000000007
+    return map[-1][-1]
