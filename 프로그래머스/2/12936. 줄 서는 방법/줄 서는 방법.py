@@ -1,13 +1,11 @@
 import math
 
 def solution(n, k):
-    arr = [i for i in range(1, n+1)]
+    n_list = list(range(1, n+1))
+    k -= 1  # 0부터 계산하므로
     answer = []
     
-    while arr:
-        a = (k - 1) // math.factorial(n - 1)
-        answer.append(arr.pop(a))
-        
-        k %= math.factorial(n - 1)
-        n -= 1
+    while n_list:
+        quo, k = divmod(k, math.factorial(len(n_list) - 1))
+        answer.append(n_list.pop(quo))
     return answer
