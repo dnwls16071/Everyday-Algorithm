@@ -1,11 +1,13 @@
 def solution(numbers):
     answer = []
-    for number in numbers:
+    def f(number):
         if number % 2 == 0:
-            answer.append(number + 1)
+            return number + 1
         else:
-            bin_number = bin(number)[2:]
-            result = "0" + str(bin_number)
-            bin_result = result[:result.rindex("0")] + "10" + result[result.rindex("0")+2:]
-            answer.append(int(bin_result, 2))
+            binnum = '0' + bin(number)[2:]
+            binnum = binnum[:binnum.rindex('0')] + "10" + binnum[binnum.rindex('0') + 2:]
+            return int(binnum, 2)
+
+    for number in numbers:
+        answer.append(f(number))
     return answer
