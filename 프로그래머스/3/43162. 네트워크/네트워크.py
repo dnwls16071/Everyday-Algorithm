@@ -1,15 +1,14 @@
+def DFS(n, graph, visited):
+    visited[n] = True
+    for i in range(len(graph[n])):
+        if not visited[i] and graph[n][i] == 1:
+            DFS(i, graph, visited)
+
 def solution(n, computers):
-    visited = [False] * (n + 1)
+    visited = [False] * n
     answer = 0
-    def DFS(start):
-        nonlocal visited, answer
-        visited[start] = True
-        for i in range(n):
-            # 해당 노드에 방문한 적 없으면서 이전에 출발한 노드와 인접한 경우라면(1)?
-            if not visited[i] and computers[start][i]:
-                DFS(i)
-    for i in range(n):
+    for i in range(len(computers)):
         if not visited[i]:
-            DFS(i)
+            DFS(i, computers, visited)
             answer += 1
     return answer
