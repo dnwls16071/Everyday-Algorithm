@@ -1,27 +1,24 @@
 from collections import deque
 
 def solution(maps):
-    X = len(maps[0])
-    Y = len(maps)
-    visited = [[0] * X for _ in range(Y)]
+    width = len(maps[0])
+    height = len(maps)
+    visited = [[False] * width for _ in range(height)]
     
-    def BFS(a, b):
-        nonlocal X, Y
-        dy = [1, 0, -1, 0]
-        dx = [0, 1, 0, -1]
-        q = deque()
-        q.append([a, b])
-        visited[a][b] = 1
-        while q:
-            y, x = q.popleft()
-            if y == Y - 1 and x == X - 1:
-                return visited[y][x]
-            for i in range(4):
-                ny = y + dy[i]
-                nx = x + dx[i]
-                if 0 <= ny < Y and 0 <= nx < X:
-                    if not visited[ny][nx] and maps[ny][nx]:
-                        q.append([ny, nx]) 
-                        visited[ny][nx] = visited[y][x] + 1
-        return -1
-    return BFS(0, 0)
+    q = deque()
+    q.append([0, 0, 1]) # 좌표값 + 지나간 칸 수
+    visited[0][0] = True
+    dy = [0, 1, 0, -1]
+    dx = [-1, 0, 1, 0]
+    while q:
+        y, x, cnt = q.popleft()
+        if y == height - 1 and x == width - 1:
+            return cnt
+        for i in range(4):
+            ny = y + dy[i]
+            nx = x + dx[i]
+            if 0 <= ny < height and 0 <= nx < width:
+                if not visited[ny][nx] and maps[ny][nx] == 1:
+                    q.append([ny, nx, cnt + 1])
+                    visited[ny][nx] = True
+    return -1
