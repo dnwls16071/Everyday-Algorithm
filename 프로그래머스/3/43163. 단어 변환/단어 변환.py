@@ -1,17 +1,20 @@
 from collections import deque
 
 def solution(begin, target, words):
-    visited = [False] * len(words)
     q = deque()
     q.append([begin, 0])
+    visited = [False] * len(words)
     while q:
-        word, v = q.popleft()
-        if word == target:
-            return v
-        else:
-            for i in range(len(words)):
-                if not visited[i]:
-                    if sum(x != y for x, y in zip(word, words[i])) == 1:
-                        q.append([words[i], v+1])
-                        visited[i] = True
+        b, cnt = q.popleft()
+        if b == target:
+            return cnt
+        for idx in range(len(words)):
+            temp = 0
+            if not visited[idx]:
+                for x, y in zip(b, words[idx]):
+                    if x != y:
+                        temp += 1
+                if temp == 1:
+                    visited[idx] = True
+                    q.append([words[idx], cnt + 1])
     return 0
