@@ -1,10 +1,12 @@
 def solution(people, limit):
+    left = 0; right = len(people) - 1
     people.sort()
-    start, end = 0, len(people) - 1
-    boat = 0
-    while start < end:
-        if people[start] + people[end] <= limit:
-            start += 1
-            boat += 1
-        end -= 1
-    return len(people) - boat
+    answer = 0
+    while left <= right:
+        if people[left] + people[right] <= limit:
+            left += 1
+            right -= 1
+        else:
+            right -= 1
+        answer += 1
+    return answer
