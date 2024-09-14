@@ -1,21 +1,25 @@
 def solution(s):
     answer = len(s)
-    for z in range(1, (len(s) // 2) + 1):
-        zip_array = []
-        std = s[:z]
-        cnt = 1
-        for idx in range(z, len(s)+z, z):
-            comp = s[idx:idx+z]
+    result = []
+    # 절반 범위까지만 탐색(압축 범위)
+    for idx in range(1, (len(s) // 2) + 1):    
+        temp = []       # 중간 압축 결과 저장
+        prev = s[:idx]
+        cnt = 1         # 연이어 등장하는 문자의 개수
+        for j in range(idx, len(s) + idx, idx):
+            curr = s[j:j+idx]
             
-            if std == comp:
+            if prev == curr:
                 cnt += 1
-            elif std != comp:
+            else:
                 if cnt > 1:
-                    zip_array.append(str(cnt) + std)
+                    temp.append(str(cnt) + prev)
                 else:
-                    zip_array.append(std)
-                std = comp
+                    temp.append(prev)
                 cnt = 1
-        joinProc = "".join(map(str, zip_array))
-        answer = min(answer, len(joinProc))
+                prev = curr
+        result.append(''.join(map(str, temp)))
+    
+    for s in result:
+        answer = min(answer, len(s))
     return answer
