@@ -1,25 +1,38 @@
 import sys
 input = sys.stdin.readline
-from itertools import combinations
 
-N, M = map(int, input().split())
-graph = [list(map(int, input().split())) for _ in range(N)]
-house = []
-chicken = []
+N, M = map(int, input().strip().split())
+Map = [list(map(int, input().strip().split())) for _ in range(N)]
+
+chicken = []          # 치킨집 리스트
+house = []              # 집 리스트
+choosen_chicken = []    # 선택된 치킨집 리스트
 for i in range(N):
     for j in range(N):
-        if graph[i][j] == 1:
-            house.append((i, j))
-        elif graph[i][j] == 2:
+        if Map[i][j] == 2:
             chicken.append((i, j))
+        elif Map[i][j] == 1:
+            house.append((i, j))
 
-result = int(1e9)
-for comb in combinations(chicken, M):
-    temp = 0
-    for h in house:
-        MAX_DISTANCE = int(1e9)
-        for i in range(M):
-            MAX_DISTANCE = min(MAX_DISTANCE, abs(h[0] - comb[i][0]) + abs(h[1] - comb[i][1]))
-        temp += MAX_DISTANCE
-    result = min(result, temp)
-print(result)
+answer = 10000000
+def recursive(level, idx):
+    global answer
+    if level == M:
+        chicken_distance = 0
+        for h in house:
+            dist = 10000000
+            for ch in choosen_chicken:
+                tmp = abs(h[0] - ch[0]) + abs(h[1] - ch[1])
+                dist = min(dist, tmp)
+            chicken_distance += dist
+        answer = min(answer, chicken_distance)
+        return answer
+    for i in range(idx, len(chicken)):
+        if chicken[i] in choosen_chicken:
+            continue
+        choosen_chicken.append(chicken[i])
+        recursive(level+1, i+1)
+        choosen_chicken.pop()
+
+recursive(0, 0)
+print(answer)
