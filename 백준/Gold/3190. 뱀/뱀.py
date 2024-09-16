@@ -1,60 +1,56 @@
-import sys
 from collections import deque
-
+import sys
 input = sys.stdin.readline
 
+N = int(input())    # 보드의 크기
+K = int(input())    # 사과의 개수
+
+maps = [[0] * (N + 1) for _ in range(N + 1)]        
+y, x = 1, 1
+maps[y][x] = 1
+d = 0
 dy = [0, 1, 0, -1]
 dx = [1, 0, -1, 0]
-
-N = int(input())
-graph = [[0] * (N+1) for _ in range(N+1)]
-dic = dict()
-
-K = int(input())
 for _ in range(K):
-    y, x = map(int, input().split())
-    graph[y][x] = 2
+    a, b = map(int, input().split())                                    # 사과 위치                         
+    maps[a][b] = 2
 
-L = int(input())
-for _ in range(L):
-    s, dir = map(str, input().split())
-    s = int(s)
-    dic[s] = dir
+L = int(input())                                                        # 뱀의 방향 전환 정보
+info = {}
+for _ in range(L):                                                                  
+    X, C = map(str, input().split())
+    info[int(X)] = C
 
-direction = 0   # 맨 처음은 오른쪽
 time = 0
-y, x = 1, 1
-graph[y][x] = 1
-snakes = deque([(1, 1)])
-
-def turn(alpha):
-    global direction
-    if alpha == "D":
-        direction = (direction + 1) % 4
-    else:
-        if direction == 0:  # 오른쪽에서 왼쪽으로 회전(=위쪽)
-            direction = 3
-        else:
-            direction = (direction - 1) % 4
-
-def BFS():
-    global direction, time, snakes, y, x
-    while snakes:
-        ny = y + dy[direction]
-        nx = x + dx[direction]
-        if ny <= 0 or ny > N or nx <= 0 or nx > N or (ny, nx) in snakes:
-            break
-        if graph[ny][nx] != 2:
-            tail_y, tail_x = snakes.popleft()
-            graph[tail_y][tail_x] = 0  # 꼬리 제거
-
+snake = deque([(1, 1)])
+while True:
+    ny = y + dy[d]
+    nx = x + dx[d]
+    # 벽에 부딪히거나 자기 자신에게 닿는 경우면 스탑
+    if ny <= 0 or ny > N or nx <= 0 or nx > N or (ny, nx) in snake:
+        break
+    # 유효한 범위 내에 있다면
+    if 0 < ny <= N and 0 < nx <= N:
+        # 이동한 지점이 사과가 아니라면 위치를 바꿔줘야함
+        if maps[ny][nx] != 2:
+            a, b = snake.popleft()
+            maps[a][b] = 0
+        # 이동한 지점에 사과가 있다면 몸통을 늘려줘야 함
         y, x = ny, nx
-        graph[y][x] = 1
-        snakes.append((ny, nx))
+        maps[ny][nx] = 1
+        snake.append((ny, nx))
         time += 1
-
-        if time in dic.keys():
-            turn(dic[time])
-    return time + 1
-
-print(BFS())
+    
+    # L : 왼쪽으로 90도 회전, D : 오른쪽으로 90도 회전
+    if time in info.keys():
+        if info[time] == 'L':
+            if d == 0:
+                d = (3 - d) % 4
+            else:
+                d -= 1
+        else:
+            if d == 3:
+                d = (d + 1) % 4
+            else:
+                d += 1
+print(time + 1)
