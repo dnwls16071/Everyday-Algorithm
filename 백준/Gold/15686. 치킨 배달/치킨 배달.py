@@ -2,40 +2,37 @@ import sys
 input = sys.stdin.readline
 
 N, M = map(int, input().split())
-city = [list(map(int, input().split())) for _ in range(N)]
+maps = [list(map(int, input().split())) for _ in range(N)]
 answer = float('inf')
 
 house = []
 chicken = []
 for i in range(N):
     for j in range(N):
-        if city[i][j] == 1:
+        if maps[i][j] == 1:
             house.append((i, j))
-        elif city[i][j] == 2:
+        elif maps[i][j] == 2:
             chicken.append((i, j))
 
-def calculate_distance():
-    total = 0
-    for h in house:
-        dist = float('inf')
-        for c in selected:
-            dist = min(dist, abs(h[0]-c[0]) + abs(h[1]-c[1]))
-        total += dist
-    return total
-
-def recursive(idx, count):
+def recursive(picked, idx):
     global answer
-    if count == M:
-        answer = min(answer, calculate_distance())
+    # 백트래킹 종료 조건 : 최대 M개의 치킨집을 골랐다면?
+    # 치킨 배달 최소거리 합 구하기
+    if len(picked) == M:
+        tot = 0 # 치킨 배달 합
+        for hy, hx in house:
+            standard = float('inf')
+            for cy, cx in picked:
+                dist = abs(hy - cy) + abs(hx - cx)
+                standard = min(standard, dist)
+            tot += standard
+        answer = min(answer, tot)
         return
-    if idx == len(chicken):
-        return
-    
-    selected.append(chicken[idx])
-    recursive(idx + 1, count + 1)
-    selected.pop()
-    recursive(idx + 1, count)
+    for i in range(idx, len(chicken)):
+        picked.append(chicken[i])
+        recursive(picked, i+1)
+        picked.pop()
 
-selected = []
-recursive(0, 0)
+picked = []
+recursive([], 0)
 print(answer)
