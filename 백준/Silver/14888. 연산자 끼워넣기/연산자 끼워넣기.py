@@ -1,39 +1,38 @@
 import sys
 input = sys.stdin.readline
+sys.setrecursionlimit(10**6)
 
-N = int(input())
-A = list(map(int, input().split()))
-add, sub, mul, div = map(int, input().split())
+N = int(input().strip())
+A_li = list(map(int, input().strip().split()))
+op_cnt = list(map(int, input().strip().split()))
 
-MAX = -int(1e9)
-MIN = int(1e9)
+Max = -1000000000
+Min = 1000000000
 
-def DFS(curr, idx):
-    global add, sub, mul, div, MAX, MIN
+def recursion(idx, res):
+    global Max, Min
     if idx == N:
-        MAX = max(MAX, curr)
-        MIN = min(MIN, curr)
-    else:
-        if add > 0:
-            add -= 1
-            DFS(curr + A[idx], idx+1)
-            add += 1
-        if sub > 0:
-            sub -= 1
-            DFS(curr - A[idx], idx+1)
-            sub += 1
-        if mul > 0:
-            mul -= 1
-            DFS(curr * A[idx], idx+1)
-            mul += 1
-        if div > 0:
-            div -= 1
-            if curr < 0:
-                DFS(-(abs(curr) // A[idx]), idx+1)
-            else:
-                DFS(abs(curr) // A[idx], idx+1)
-            div += 1
+        Max = max(Max, res)
+        Min = min(Min, res)
+        return
+    # 덧셈의 개수
+    if op_cnt[0] > 0:
+        op_cnt[0] -= 1
+        recursion(idx + 1, res + A_li[idx])
+        op_cnt[0] += 1
+    if op_cnt[1] > 0:
+        op_cnt[1] -= 1
+        recursion(idx + 1, res - A_li[idx])
+        op_cnt[1] += 1
+    if op_cnt[2] > 0:
+        op_cnt[2] -= 1
+        recursion(idx + 1, res * A_li[idx])
+        op_cnt[2] += 1
+    if op_cnt[3] > 0:
+        op_cnt[3] -= 1
+        recursion(idx + 1, int(res / A_li[idx]))
+        op_cnt[3] += 1
 
-DFS(A[0], 1)
-print(MAX)
-print(MIN)
+recursion(1, A_li[0])
+print(Max)
+print(Min)
