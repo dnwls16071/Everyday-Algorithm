@@ -1,38 +1,37 @@
 import sys
 input = sys.stdin.readline
-sys.setrecursionlimit(10**6)
 
-N = int(input().strip())
-A_li = list(map(int, input().strip().split()))
-op_cnt = list(map(int, input().strip().split()))
+N = int(input())
+A = list(map(int, input().split()))
+MAX = -1000000000
+MIN = 1000000000
+# (+) (-) (x) (/)
+op = list(map(int, input().split()))
 
-Max = -1000000000
-Min = 1000000000
-
-def recursion(idx, res):
-    global Max, Min
+def recursive(idx, res):
+    global MAX, MIN
     if idx == N:
-        Max = max(Max, res)
-        Min = min(Min, res)
-        return
-    # 덧셈의 개수
-    if op_cnt[0] > 0:
-        op_cnt[0] -= 1
-        recursion(idx + 1, res + A_li[idx])
-        op_cnt[0] += 1
-    if op_cnt[1] > 0:
-        op_cnt[1] -= 1
-        recursion(idx + 1, res - A_li[idx])
-        op_cnt[1] += 1
-    if op_cnt[2] > 0:
-        op_cnt[2] -= 1
-        recursion(idx + 1, res * A_li[idx])
-        op_cnt[2] += 1
-    if op_cnt[3] > 0:
-        op_cnt[3] -= 1
-        recursion(idx + 1, int(res / A_li[idx]))
-        op_cnt[3] += 1
+        MAX = max(MAX, res)
+        MIN = min(MIN, res)
+        return 
+    
+    if op[0] > 0:
+        op[0] -= 1
+        recursive(idx + 1, res + A[idx])
+        op[0] += 1
+    if op[1] > 0:
+        op[1] -= 1
+        recursive(idx + 1, res - A[idx])
+        op[1] += 1
+    if op[2] > 0:
+        op[2] -= 1
+        recursive(idx + 1, res * A[idx])
+        op[2] += 1
+    if op[3] > 0:
+        op[3] -= 1
+        recursive(idx + 1, int(res / A[idx]))
+        op[3] += 1           
 
-recursion(1, A_li[0])
-print(Max)
-print(Min)
+recursive(1, A[0])
+print(MAX)
+print(MIN)
