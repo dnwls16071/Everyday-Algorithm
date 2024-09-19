@@ -1,18 +1,21 @@
 def solution(N, stages):
-    # stages에는 1 이상 N + 1 이하의 자연수가 담겨있다.
-    cnt = [0] * (N+2)
-    users = len(stages)
-    for i in stages:
-        cnt[i] += 1
-    
+    answer = []
     result = []
-    # (스테이지 번호, 각 스테이지별 인원 수)
-    for i in range(1, N+1):
-        if users == 0:
-            result.append((i, 0))
+    state = [0] * (N + 2)   # 라운드별 현황
+    for s in stages:
+        state[s] += 1
+    
+    tot = sum(state)
+    for idx, s in enumerate(state):
+        if tot != 0:
+            result.append([idx, s / tot])
         else:
-            result.append((i, cnt[i] / users))
-            users -= cnt[i]
+            result.append([idx, 0])
+        tot -= s
     result = sorted(result, key=lambda x : (-x[1], x[0]))
-    result = [i[0] for i in result]
-    return result
+    
+    for i in result:
+        if i[0] == N + 1 or i[0] == 0:
+            continue
+        answer.append(i[0])
+    return answer
