@@ -3,46 +3,49 @@ input = sys.stdin.readline
 from collections import deque
 
 N, L, R = map(int, input().split())
-graph = [list(map(int, input().split())) for _ in range(N)]
+maps = [list(map(int, input().split())) for _ in range(N)]
+dy = [-1, 0, 1, 0]
+dx = [0, -1, 0, 1]
 
-def BFS(y, x):
-    dy = [1, 0, -1, 0]
-    dx = [0, 1, 0, -1]
+def BFS(a, b):
     q = deque()
-    q.append((y, x))
-    union = [(y, x)]            # 연합 개수
+    union = []
+    q.append([a, b])
+    union.append([a, b])
+    visited[a][b] = True
     while q:
         y, x = q.popleft()
         for i in range(4):
             ny = y + dy[i]
             nx = x + dx[i]
+            if ny < 0 or ny >= N or nx < 0 or nx >= N:
+                continue
             if 0 <= ny < N and 0 <= nx < N and not visited[ny][nx]:
-                if abs(graph[ny][nx] - graph[y][x]) >= L and abs(graph[ny][nx] - graph[y][x]) <= R:
+                if L <= abs(maps[ny][nx] - maps[y][x]) <= R:
                     visited[ny][nx] = True
-                    q.append((ny, nx))
-                    union.append((ny, nx))
+                    q.append([ny, nx])
+                    union.append([ny, nx])
     return union
 
-result = 0  # 인구 이동이 발생하는 횟수
+answer = 0
 while True:
     flag = False
     visited = [[False] * N for _ in range(N)]
     for i in range(N):
         for j in range(N):
             if not visited[i][j]:
-                visited[i][j] = True
-                union = BFS(i, j)
-
-                if len(union) > 1:
+                u = BFS(i, j)
+                if len(u) > 1:  # 연합이 존재한다면 인구 이동이 발생
                     flag = True
-                    for u in union:
-                        y, x = u
-                        value = sum(graph[y][x] for y, x in union) // len(union)
-                    for u in union:
-                        y, x = u
-                        graph[y][x] = value
-    if not flag: 
-        break
+                    tot = 0         # 연합의 전체 인구 수
+                    for uy, ux in u:
+                        tot += maps[uy][ux]
+                    average = int(tot / len(u))
+                    for uy, ux in u:
+                        maps[uy][ux] = average
+                
+    if flag:
+        answer += 1
     else:
-        result += 1
-print(result)
+        print(answer)
+        break
