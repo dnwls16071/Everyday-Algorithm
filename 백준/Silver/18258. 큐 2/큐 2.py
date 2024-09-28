@@ -1,34 +1,33 @@
-from collections import deque
 import sys
+input = sys.stdin.readline
+from collections import deque
 
-li = deque([])
 N = int(input())
+q = deque()
 for _ in range(N):
-    command = list(map(str, sys.stdin.readline().strip().split()))
-    if len(command) == 2:
-        if command[0] == "push":
-            li.append(int(command[1]))
+    commands = list(map(str, input().split()))
+    if len(commands) == 2:
+        q.append(int(commands[1]))
     else:
-        if command[0] == "pop":
-            if len(li) == 0:
+        if commands[0] == "pop":
+            if q:
+                print(q.popleft())
+            else:
                 print(-1)
-            else:
-                temp = li.popleft()
-                print(temp)
-        elif command[0] == "size":
-            print(len(li))
-        elif command[0] == "empty":
-            if len(li) == 0:
-                print(1)
-            else:
+        elif commands[0] == "size":
+            print(len(q))
+        elif commands[0] == "empty":
+            if q:
                 print(0)
-        elif command[0] == "front":
-            if len(li) == 0:
-                print(-1)
             else:
-                print(li[0])
-        elif command[0] == "back":
-            if len(li) == 0:
-                print(-1)
+                print(1)
+        elif commands[0] == "front":
+            if q:
+                print(q[0])
             else:
-                print(li[-1])
+                print(-1)
+        elif commands[0] == "back":
+            if q:
+                print(q[-1])
+            else:
+                print(-1)
